@@ -1,0 +1,21 @@
+unknown terrain - if unknown, return TRUE
+terrain - if unwalkable, return FALSE
+fog - if unknown, return TRUE
+units - if unwalkable, return FALSE
+return TRUE
+
+--- overlay settings ---
+
+array of bits < surface
+array of chars < surface
+array of ints < surface
+array of pointers of arrays of pointers of structs of longs < python list
+callback function < 
+
+x by y
+y by x 
+
+--- settings ---
+turn cost
+linear walk cost
+directions/cost for each
