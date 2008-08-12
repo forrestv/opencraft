@@ -1,7 +1,7 @@
 all: path.so
 
 pathmod.o: pathmod.c path.c
-	gcc -c pathmod.c -I /usr/include/python2.5 -Wall -o pathmod.o -O3 `sdl-config --cflags`
+	gcc -c pathmod.c -I /usr/include/python2.5 -Wall -o pathmod.o `sdl-config --cflags` -g
 
 path.so: pathmod.o
 	ld -shared pathmod.o -o path.so `sdl-config --libs`

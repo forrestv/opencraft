@@ -1,0 +1,11 @@
+0x001 Air
+0x002 Ground
+0x004 lockdown
+0x008 consume
+0x010 spider mines, lockdown, parasite, spawn broodlings, consume,
+	psionic storm
+0x020 spawn broodlings
+0x040 maelstrom, feedback, mind control, restoration, psionic storm,
+	statis field, plague, ensnare, irradiate, emp shockwave
+0x080 spawn broodlings
+0x100 consume
