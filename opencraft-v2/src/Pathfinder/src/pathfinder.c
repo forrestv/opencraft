@@ -82,15 +82,15 @@ typedef struct {
   
   int destx;
   int desty;
-} pathfinderData;
+} pathData;
 
-pathfinderData *pathfinderNew(int width, int height) {
-  pathfinderData *data;
+pathData *pathNew(int width, int height) {
+  pathData *data;
   int i;
   
   if (width <= 0 || width > 1024 || height <= 0 || height > 1024) return NULL;
   
-  data = malloc(sizeof(pathfinderData));
+  data = malloc(sizeof(pathData));
   
   data->width = width;
   data->height = height;
@@ -116,7 +116,7 @@ pathfinderData *pathfinderNew(int width, int height) {
   return data;
 }    
 
-void pathfinderFree(pathfinderData *data)
+void pathFree(pathData *data)
 {
   free(data->state);
   free(data->parent);
@@ -127,19 +127,18 @@ void pathfinderFree(pathfinderData *data)
   free(data);
 }
 
-void pathfinderOverlay(pathfinderData *data, int num, char *odata, int settings) {
+void pathSetOverlay(pathData *data, int num, char *odata, int settings) {
   if (num < 0 || num >= OVERLAYS) return;
   data->overlay[num] = odata;
   data->overlays[num] = settings;
 }
 
-int tilewalkable(pathfinderData *data, int x, int y) {
-  return TRUE;
+int tilewalkable(pathData *data, int x, int y) {
   int width = data->width;
-  return data->overlay[0][IND(x,y)];
+  return data->overlay[0][IND(x,y)] == 0;
 }
 
-int walkable(pathfinderData *data, int startx, int starty, int dir) {
+int walkable(pathData *data, int startx, int starty, int dir) {
   int width = data->width;
   int height = data->height;
   int i, j;
@@ -159,7 +158,7 @@ int walkable(pathfinderData *data, int startx, int starty, int dir) {
   return TRUE;
 }
 
-int getfcost(pathfinderData *data, int node) {
+int getfcost(pathData *data, int node) {
   int x,y;
   int width = data->width;
   x = node % width;
@@ -170,7 +169,7 @@ int getfcost(pathfinderData *data, int node) {
 #define HeapUp(i) (((i)-1)/2)
 #define HeapDown(i) (((i)*2)+1)
 
-int pathfinderHeapPopTop(pathfinderData *data, int *last) {
+int pathHeapPopTop(pathData *data, int *last) {
   int width = data->width;
   int height = data->height;
   int len = width*height;
@@ -211,7 +210,7 @@ int pathfinderHeapPopTop(pathfinderData *data, int *last) {
   return result;
 }
 
-void pathfinderHeapInsert(pathfinderData *data, int *last, int num) {
+void pathHeapInsert(pathData *data, int *last, int num) {
   int *heap = data->openlist;
   
   *last += 1;
@@ -238,12 +237,12 @@ void pathfinderHeapInsert(pathfinderData *data, int *last, int num) {
   }
 }
 
-void pathfinderHeapMoveUp(pathfinderData *data, int *last, int num) {
-//  printf("moveup actually called with %i and %i last\n", num, *last);
+void pathHeapMoveUp(pathData *data, int *last, int num) {
+  //printf("moveup actually called with %i and %i last\n", num, *last);
   return;
 }
 
-int *pathfinderFind(pathfinderData *data, int startx, int starty, int startdir, int endx, int endy) {
+int *pathFind(pathData *data, int startx, int starty, int startdir, int endx, int endy) {
   int width = data->width;
   int height = data->height;
   data->destx = endx;
@@ -255,20 +254,20 @@ int *pathfinderFind(pathfinderData *data, int startx, int starty, int startdir, 
   data->state[IND(startx,starty)] = statecounter + 1;
   data->gcost[IND(startx,starty)] = 0;
   data->parent[IND(startx,starty)] = REV(startdir);
-  pathfinderHeapInsert(data, &openlast, IND(startx,starty));
+  pathHeapInsert(data, &openlast, IND(startx,starty));
   
   int currx, curry;
   
   int tmpx, tmpy;
   
   while (TRUE) {
-    int node = pathfinderHeapPopTop(data, &openlast);
-    if (node == -1) return NULL;
+    int node = pathHeapPopTop(data, &openlast);
+    if (node == -1) return NULL; // No path
     
     currx = node % width;
     curry = node / width;
     
-    if (currx == endx && curry == endy) break;
+    if (currx == endx && curry == endy) break; // Found path
     
     data->state[node] = statecounter + 2; // Closed
     
@@ -283,13 +282,13 @@ int *pathfinderFind(pathfinderData *data, int startx, int starty, int startdir, 
       int dirdiff = d-REV(data->parent[IND(currx,curry)]);
       if (dirdiff > (DIRLEN/2)) dirdiff -= DIRLEN;
       if (dirdiff < (-DIRLEN/2)) dirdiff += DIRLEN;
-      int cost = data->gcost[IND(currx,curry)] + dist + abs(dirdiff)*10;
+      int cost = data->gcost[IND(currx,curry)] + dist + abs(dirdiff)*100;
       if (data->state[IND(tmpx,tmpy)] == statecounter + 1) { // Open
         if (data->gcost[IND(tmpx,tmpy)] > cost) {
           data->parent[IND(tmpx,tmpy)] = REV(d);
-          printf("old cost %i, new %i\n", data->gcost[IND(tmpx,tmpy)], cost);
+//          printf("old cost %i, new %i\n", data->gcost[IND(tmpx,tmpy)], cost);
           data->gcost[IND(tmpx,tmpy)] = cost;
-          pathfinderHeapMoveUp(data, &openlast, IND(tmpx,tmpy));
+          pathHeapMoveUp(data, &openlast, IND(tmpx,tmpy));
         }
       } else if (data->state[IND(tmpx,tmpy)] == statecounter + 2) { // Closed
         if (data->gcost[IND(tmpx,tmpy)] > cost) {
@@ -300,7 +299,7 @@ int *pathfinderFind(pathfinderData *data, int startx, int starty, int startdir, 
         data->state[IND(tmpx,tmpy)] = statecounter + 1;
         data->parent[IND(tmpx,tmpy)] = REV(d);
         data->gcost[IND(tmpx,tmpy)] = cost;
-        pathfinderHeapInsert(data, &openlast, IND(tmpx,tmpy));
+        pathHeapInsert(data, &openlast, IND(tmpx,tmpy));
       }
     }
   }
@@ -338,9 +337,8 @@ int *pathfinderFind(pathfinderData *data, int startx, int starty, int startdir, 
   resultp[2*count+1] = endy; // New
   return resultp;
 }
-
 /*
-void printh(pathfinderData *data, int *last) {
+void printh(pathData *data, int *last) {
   int i, cur, full;
   cur = 0;
   full = 1;
@@ -356,7 +354,7 @@ void printh(pathfinderData *data, int *last) {
 }
 
 int test_heap() {
-  pathfinderData *data = pathfinderNew(1000,1000);
+  pathData *data = pathNew(1000,1000);
   int width = data->width;
   int height = data->height;
   int x, y;
@@ -375,11 +373,11 @@ int test_heap() {
   int last = -1;
   for (i = 0; i < 1000000; i++) {
     int r = rand() % 1000000;
-    pathfinderHeapInsert(data, &last, r);
+    pathHeapInsert(data, &last, r);
   }
   int o=-1;
   for (i = 0; i < 1000000; i++) {
-    int r = pathfinderHeapPopTop(data, &last);
+    int r = pathHeapPopTop(data, &last);
     if (r<o)
         printf("%i\n", r);
     o = r;
