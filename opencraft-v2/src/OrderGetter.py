@@ -1,4 +1,6 @@
-class Player(object): pass
+class Player(object):
+    def step(self):
+        raise NotImplementedError
 
 class LocalPlayer(Player): pass
 class ComputerPlayer(Player): pass
