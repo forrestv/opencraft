@@ -5,7 +5,8 @@ sprite_build	H 912 1140
 sprite_overlay	H 1140 1596
 
 #unknown_1	B 2244 2472
-
+unit_hasshields	B 2473 2701
+unit_shields	H 2700 3156
 unit_hitpoints	I 3156 4068
 sprite_level	B 4068 4296
 unit_movement	B 4296 4524
@@ -37,7 +38,7 @@ build_minerals	H 14860 15316
 build_gas	H 15316 15772
 build_time	H 15772 16228
 unit_restricts	H 16228 16684
-
+group_flags	B 16684 16912
 food_provided	B 16912 17140
 food_required	B 17140 17368
 space_required	B 17368 17596
