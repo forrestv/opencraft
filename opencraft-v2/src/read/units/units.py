@@ -7,7 +7,7 @@ def readitem((name, type, start)):
 
 class UnitType(object):
     def __init__(self, number, attrs):
-        #self.name = t[number]
+        self.name = t[number]
         for (name, type, start), attr in zip(fields, attrs):
             setattr(self, name, attr)
         
@@ -22,11 +22,11 @@ fields = [
     ('unit_subunit2', 'H', 684),	# 912
     ('sprite_build', 'H', 912),		# 1140
     ('sprite_overlay', 'H', 1140),	# 1596
+    # 2.842*228 
+    ('myunknown_1', 'I', 1596),		# 2244
     
     ('unknown_1', 'B', 2244),		# 2472
-    # 1 byte
     ('unit_hasshields', 'B', 2472), 	# 2700
-    # -1 byte
     ('unit_shields', 'H', 2700), 	# 3156
     ('unit_hitpoints', 'I', 3156),	# 4068
     ('sprite_level', 'B', 4068),	# 4296
@@ -70,11 +70,13 @@ fields = [
     ('unit_available', 'H', 19420),	# 19876
 ]
 
-#import tbl
-#t = tbl.read(open("stat_txt.tbl"))
+# unknown 5
+
+import tbl
+t = tbl.read(open("stat_txt.tbl"))
 
 dat = open('units.dat')
 units = [UnitType(number, field) for number, field in enumerate(zip(*map(readitem, fields)))]
 
 for i, x in enumerate(units):
-    print i, x.unit_shields
+    print i, x.name.ljust(50), x.myunknown_1
