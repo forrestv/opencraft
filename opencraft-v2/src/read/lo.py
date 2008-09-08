@@ -1,7 +1,6 @@
 import struct
-from common import read_struct
 
-def g(f, s):
+def read_struct(f, s):
     l = struct.calcsize(s)
     d = f.read(l)
     return struct.unpack(s, d)
@@ -22,4 +21,5 @@ def load(f):
     
 if __name__ == "__main__":
     import sys
-    print load(open(sys.argv[1]))
+    for frame in load(open(sys.argv[1])):
+        print frame
