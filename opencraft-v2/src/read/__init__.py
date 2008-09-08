@@ -35,7 +35,7 @@ def read_music(f):
     return files[f].file
 
 class FileWrapper(object):
-    def __init__(self,file):
+    def __init__(self, file):
         self._file = file
     @property
     def file(self):
