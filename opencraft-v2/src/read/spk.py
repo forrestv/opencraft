@@ -2,7 +2,7 @@ import struct
 import pygame
 import palettes
 
-class open:
+class open(object):
     def __init__(self, f, palette):
         layers = struct.unpack("<H",f.read(2))[0]
         header = struct.unpack("<"+str(header)+"H",f.read(layers*2))

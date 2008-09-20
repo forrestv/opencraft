@@ -3,13 +3,13 @@
 import struct
 import pygame
 
-from .. import cdict
+from .. import util
 from .. import read
 
 spacelen = {"10": 5, "16x": 12}
 
-fonts = cdict.cdict(read.read_font)
-palettes = cdict.cdict(read.read_font_palette)
+fonts = util.cdict(read.read_font)
+palettes = util.cdict(read.read_font_palette)
 
 def render(size,palette,text,tight=False):
     font = fonts["files\\font\\font%s.fnt" % size]
