@@ -7,7 +7,7 @@ setup(
     ext_modules=[ 
         Extension("pysmk", ["pysmk.pyx"],
         include_dirs=["/usr/include/SDL"],
-        extra_compile_args=["-O3","-funroll-loops"],
+        extra_compile_args=["-g"], # ["-O3","-funroll-loops"],
         libraries=["SDL_mixer"],
         ),
     ],

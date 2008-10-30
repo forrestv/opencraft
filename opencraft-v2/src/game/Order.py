@@ -1,5 +1,13 @@
-class Order(object): pass
+class Order(object):
+    def __init__(self, unit):
+       self.unit = unit
+    @classmethod
+    def deserialize(cls, data):
+        cls
+    def serialize(self):
+        return data
 
+'''
 class Move(Order):
     icon = "Move"
     def __init__(self, dest):
@@ -65,3 +73,4 @@ class Hold(Order): pass
 class SetRallyPoint(Order): pass
 
 class Liftoff(Order): pass
+'''

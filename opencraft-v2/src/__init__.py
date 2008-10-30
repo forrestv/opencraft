@@ -8,15 +8,17 @@ def display_image(image):
     pygame.display.update()
     
 def play_introduction():
+    music.fadeout()
     ui.Video("smk\\blizzard.smk")
     ui.Video("smk\\starxintr.smk")
+    music.start("music\\title.wav")
     
 def main():
     os.environ['SDL_VIDEO_CENTERED'] = '1'
     
     pygame.display.init()
-    pygame.mixer.init()
-    pygame.mouse.set_visible(False)
+    pygame.mixer.init(22050)
+    #pygame.mouse.set_visible(False)
     pygame.display.set_caption("Opencraft")
     pygame.display.set_icon(read.read_exe_icon("files\\starcraft.exe"))
     image = read.read_pcx("glue\\title\\title.pcx")

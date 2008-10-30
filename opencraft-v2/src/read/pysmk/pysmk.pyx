@@ -357,8 +357,6 @@ cdef class SMKReader(object):
         
         cdef int16_t *buf = <int16_t*>(self.audio_chunk[index].abuf + self.audio_pos[index])
         
-        cdef uint32_t astart = self.audio_pos[index]
-        
         cdef uint32_t l = self._read_int()
         assert self.audio_rate[index] & 0x80000000, "audio not supported" # TODO: other audio support
         cdef uint32_t uncompressed_size = self._read_int()
@@ -380,8 +378,10 @@ cdef class SMKReader(object):
         
         for i from 0 <= i < 4:
             PyMem_Free(tree[i])
-        
+        #print "max", self.audio_size[index]*self.frames
+        #print "old",  self.audio_pos[index]
         self.audio_pos[index] += uncompressed_size
+        #print "new",  self.audio_pos[index]
         #print ((start+l*8)-self.bpos)/8.
         self.bpos = start + l*8
     
