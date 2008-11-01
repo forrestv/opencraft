@@ -13,41 +13,37 @@ def get_center_coords(inner, outer):
 class UI(object):
     def __init__(self):
         self.display = pygame.Surface((640,480))
-        self.display2 = pygame.Surface((640,480))
-        self.updateflag = PipeEvent.PipeEvent()
-        event_threadt = threading.Thread(target=self.event_thread)
-        display_threadt = threading.Thread(target=self.display_thread)
-        event_threadt.setDaemon(True)
-        display_threadt.setDaemon(True)
-        self.pause = False
-        self.run = True
-        event_threadt.start()
-        display_threadt.start()
-        self.work()
-        self.run = False
-        event_threadt.join()
-        display_threadt.join()
-        
-    def event_thread(self):
-        while self.run:
-            if not self.pause:
-                for event in pygame.event.get():
-                    self.handle_event(event)
-            x11events.wait(.5)
+        self.calls = []
+    def add_call(self, func, delay):
+        "delay of 0 means until next event"
+        self.calls.append((func, delay))
+    
+    def execute(self):
+        time = 0.
+        clock = pygame.time.Clock()
+        calls = [[c[0], c[1], None] for c in self.calls]
+        for call in calls:
+            call[0]()
+            call[2] = 0
+        while True:
+            x11events.wait(min(x[2]+x[1]-time for x in calls if x[1] is not None))
+            time += clock.tick()/1000.
+            self.handle_events()
+            for call in calls:
+                if call[1] is None:
+                    call[0]()
+                else:
+                    while time > call[2] + call[1]:
+                        call[2] += call[1]
+                        call[0]()
     
     def update(self):
-        self.display2, self.display = self.display, self.display2
-        self.updateflag.set()
+        pygame.display.update()
+        
+    def handle_events(self):
+        for event in pygame.event.get():
+            self.handle_event(event)
     
-    def display_thread(self):
-        from .. import ui
-        while self.run:
-            if not self.pause:
-                ui.display.blit(self.display2, (0,0))
-                pygame.display.update()
-            self.updateflag.wait(.5)
-            self.updateflag.clear()
-            
     def handle_event(self, event):
         name = pygame.event.event_name(event.type).lower()
         try:

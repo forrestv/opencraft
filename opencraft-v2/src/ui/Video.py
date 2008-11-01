@@ -1,4 +1,3 @@
-import threading
 import os
 import pygame
 import ui

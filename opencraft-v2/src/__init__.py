@@ -17,7 +17,7 @@ def main():
     os.environ['SDL_VIDEO_CENTERED'] = '1'
     
     pygame.display.init()
-    pygame.mixer.init(22050)
+    pygame.mixer.init(44100)
     #pygame.mouse.set_visible(False)
     pygame.display.set_caption("Opencraft")
     pygame.display.set_icon(read.read_exe_icon("files\\starcraft.exe"))
@@ -43,7 +43,7 @@ def main():
             7: lambda: 0, # terran
             8: lambda: 0, # zerg
             10: lambda: ui.GlxMenu("rez\\glucreat.bin", "glue\\palcs\\backgnd.pcx", {
-                12: lambda: 0,
+                12: lambda: credits(),
             }),
         }),
         4: lambda: ui.GlxMenu("rez\\gluconn.bin", "glue\\palnl\\backgnd.pcx", {
@@ -52,4 +52,4 @@ def main():
         5: lambda: 0, # campaign editor
         8: play_introduction,
         9: lambda: ui.GlxMenu("rez\\credits.bin", "glue\\palmm\\backgnd.pcx", {}),
-    })
+    }).execute()

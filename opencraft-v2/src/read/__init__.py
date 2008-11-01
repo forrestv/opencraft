@@ -34,6 +34,10 @@ def read_wav(f):
 def read_music(f):
     return files[f].file
 
+def read_chk(f):
+    import chk
+    return files
+
 class FileWrapper(object):
     def __init__(self, file):
         self._file = file

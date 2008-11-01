@@ -53,7 +53,7 @@ class PlayerContainer(object):
 class GameState(object):
     def __init__(self, map):
         self.units = []
-        self.map = map
+        self.map = map.units
         self.cycle = 0
     def step(self, orders):
         for order in orders:
@@ -61,6 +61,7 @@ class GameState(object):
             unit.apply_order(order)
         for unit in self.units:
             unit.update()
+        self.cycle += 1
 
 class Game(object): # GameState ?
     def __init__(self, map, players):
