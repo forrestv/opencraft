@@ -35,7 +35,7 @@ def process(f):
     and_pix = pygame.surfarray.pixels2d(and_img)
     xor_pix[:,:] = and_pix
     return xor_img
-    
+
 def read_icon(string):
     pe = pefile.PE(data=string)
     rt_string_idx = [entry.id for entry in pe.DIRECTORY_ENTRY_RESOURCE.entries].index(pefile.RESOURCE_TYPE['RT_ICON'])

@@ -12,7 +12,7 @@ class Node:
         else:
             st = "<12HI2Hh26H"
             s = "0, disabled, 2, visible, responds_mouse, 5, cancel, no_over_sound, 8, has_hotkey, smallest_font, larger_font, 12, hide_color_0_edges, largest_font, 15, smaller font, 17, translucency_effect, default, bring_to_front, center, right, center, smk_on_top?, brighten_on_mouseover?, 26, 27, 28, 29, no_click_sound, 31"
-            
+        
         d = file.read(struct.calcsize(st))
         d = struct.unpack(st, d)
         if level == 2:
@@ -69,7 +69,7 @@ class Node:
                     self.bad.append((i))
                 continue
             setattr(self, s[i], c)
-            
+        
         if TextOffset:
             file.seek(TextOffset)
             s = ""
@@ -80,12 +80,12 @@ class Node:
             self.text = s
         else:
             self.text = None
-            
+        
         if level == 0:
             assert NextOffset == 0
         else:
             self.NextOffset = NextOffset
-            
+        
         self.children = []
         if ChildOffset:
             self.children.append(Node(file, ChildOffset, level+1))
@@ -93,7 +93,7 @@ class Node:
                 self.children.append(Node(file, self.children[-1].NextOffset, level+1))
             for c in self.children:
                 del c.NextOffset
-                
+
 # Testing code
 
 def bin(n):
@@ -112,7 +112,7 @@ def bin(n):
     for i in n:
         r = r + t[i]
     return str(int(r))
-    
+
 def print_tree(t, indent=0):
     print '    '*indent+repr(t.text)
     for k in sorted(dir(t)):
@@ -122,7 +122,7 @@ def print_tree(t, indent=0):
             print '    '*(indent+2), k, v
     for i in t.children:
         print_tree(i, indent + 1)
-        
+
 if __name__ == "__main__":
     import sys
     f = sys.argv[1]
@@ -136,6 +136,6 @@ if __name__ == "__main__":
         pygame.draw.rect(d, [random.random()*255 for i in range(3)], (n.x,n.y,n.width,n.height))
         for j in n.children:
             pygame.draw.rect(d, [random.random()*255 for i in range(3)], (n.x+j.x,n.y+j.y,10,10))
-            
+    
     while True: pygame.display.update()
     

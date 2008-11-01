@@ -24,11 +24,11 @@ class WeaponType:
         self.icon = data[21]
 
 def g(s):
-  s = "<130"+s
-  l = struct.calcsize(s)
-  r = f.read(l)
-  assert len(r) == l
-  return struct.unpack(s, r)
+    s = "<130"+s
+    l = struct.calcsize(s)
+    r = f.read(l)
+    assert len(r) == l
+    return struct.unpack(s, r)
 
 s = "HIBHIIBBBBBHHHHHBBHHHH"
 assert struct.calcsize("<"+s) == 42

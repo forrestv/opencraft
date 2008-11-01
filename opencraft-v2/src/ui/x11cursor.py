@@ -15,7 +15,7 @@ def get_fd():
     n = get_display()
     n = ctypes.cast(n+8, ctypes.POINTER(ctypes.c_int)).contents.value
     return n
-    
+
 fd = None
 
 def wait(timeout=None):

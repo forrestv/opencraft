@@ -13,7 +13,7 @@ def main():
         psyco.full()
     if psyco_log:
         psyco.log()
-        
+    
     global src
     import src
     
@@ -21,6 +21,6 @@ def main():
         cProfile.run("src.main()", "stats")
     else:
         src.main()
-        
+
 if __name__ == "__main__":
     main()

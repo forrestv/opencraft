@@ -62,15 +62,15 @@ class Listener(object):
         return l
 
 if __name__ == "__main__":
-     import select
-     listen = Listener(2410)
-     clients = []
-     while True:
-         need_update = select.select([listen]+clients, [], [])[0]
-         for conn in need_update:
-             if conn is listen:
-                 clients.extend(listen.accept())
-             else:
-                 for msg in conn.recv():
-                     for client in clients:
-                         client.send(msg)
+    import select
+    listen = Listener(2410)
+    clients = []
+    while True:
+        need_update = select.select([listen]+clients, [], [])[0]
+        for conn in need_update:
+            if conn is listen:
+                clients.extend(listen.accept())
+            else:
+                for msg in conn.recv():
+                    for client in clients:
+                        client.send(msg)

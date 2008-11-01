@@ -9,7 +9,7 @@ def get_center_coords(inner, outer):
     x = outer[0]/2 - inner[0]/2
     y = outer[1]/2 - inner[1]/2
     return x, y
-    
+
 class UI(object):
     def __init__(self):
         self.display = pygame.Surface((640,480))
@@ -39,7 +39,7 @@ class UI(object):
     
     def update(self):
         pygame.display.update()
-        
+    
     def handle_events(self):
         for event in pygame.event.get():
             self.handle_event(event)
@@ -51,12 +51,12 @@ class UI(object):
         except AttributeError:
             return
         handler(**event.dict)
-        
+    
     def quit(self):
         os._exit(0)    
-        
+
 def CursorUI(UI):
     def __init__(self, cursor=None): pass
-    
+
 def init():
     pass

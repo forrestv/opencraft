@@ -1,9 +1,9 @@
 import Order
 '''
 class Player
-  def game_loop
-  def draw_loop?
-  def get_orders(cycle): return list or None
+    def game_loop
+    def draw_loop?
+    def get_orders(cycle): return list or None
 '''
 class OrderCollector(object):
     def insert(self, cycle, orders):
@@ -47,7 +47,7 @@ class AIPlayer(Player):
 
 class PlayerContainer(object):
     def __init__(self, players):
-       pass
+        pass
     def remove(self, index): pass
 
 class GameState(object):

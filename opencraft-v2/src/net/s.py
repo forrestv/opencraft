@@ -29,28 +29,28 @@ SharedSecretResponseMsg      = '0102'
 SharedSecretErrorResponseMsg = '0112'
 
 dictAttrToVal ={'MappedAddress'   : MappedAddress,
-                'ResponseAddress' : ResponseAddress,
-                'ChangeRequest'   : ChangeRequest,
-                'SourceAddress'   : SourceAddress,
-                'ChangedAddress'  : ChangedAddress,
-                'Username'        : Username,
-                'Password'        : Password,
-                'MessageIntegrity': MessageIntegrity,
-                'ErrorCode'       : ErrorCode,
-                'UnknownAttribute': UnknownAttribute,
-                'ReflectedFrom'   : ReflectedFrom,
-                'XorOnly'         : XorOnly,
-                'XorMappedAddress': XorMappedAddress,
-                'ServerName'      : ServerName,
-                'SecondaryAddress': SecondaryAddress}
+    'ResponseAddress' : ResponseAddress,
+    'ChangeRequest'   : ChangeRequest,
+    'SourceAddress'   : SourceAddress,
+    'ChangedAddress'  : ChangedAddress,
+    'Username'        : Username,
+    'Password'        : Password,
+    'MessageIntegrity': MessageIntegrity,
+    'ErrorCode'       : ErrorCode,
+    'UnknownAttribute': UnknownAttribute,
+    'ReflectedFrom'   : ReflectedFrom,
+    'XorOnly'         : XorOnly,
+    'XorMappedAddress': XorMappedAddress,
+    'ServerName'      : ServerName,
+    'SecondaryAddress': SecondaryAddress}
 
 dictMsgTypeToVal = {'BindRequestMsg'              :BindRequestMsg,
-                    'BindResponseMsg'             :BindResponseMsg,
-                    'BindErrorResponseMsg'        :BindErrorResponseMsg,
-                    'SharedSecretRequestMsg'      :SharedSecretRequestMsg,
-                    'SharedSecretResponseMsg'     :SharedSecretResponseMsg,
-                    'SharedSecretErrorResponseMsg':SharedSecretErrorResponseMsg}
-           
+    'BindResponseMsg'             :BindResponseMsg,
+    'BindErrorResponseMsg'        :BindErrorResponseMsg,
+    'SharedSecretRequestMsg'      :SharedSecretRequestMsg,
+    'SharedSecretResponseMsg'     :SharedSecretResponseMsg,
+    'SharedSecretErrorResponseMsg':SharedSecretErrorResponseMsg}
+
 Blocked = "Blocked"
 OpenInternet = "Open Internet"
 FullCone = "Full Cone"
@@ -73,7 +73,7 @@ def Test(s, host, port, source_ip, source_port, send_data=""):
     str_len = "%#04d" % (len(send_data)/2)
     TranID = GenTranID()
     str_data = ''.join([BindRequestMsg, str_len, TranID, send_data])
-
+    
     data = binascii.a2b_hex(str_data)
     recvCorr = False
     while not recvCorr:
@@ -112,7 +112,7 @@ def Test(s, host, port, source_ip, source_port, send_data=""):
                     str(int(binascii.b2a_hex(buf[base+11:base+12]), 16))])
                     retVal['ExternalIP'] = ip
                     retVal['ExternalPort'] = port
-                    
+                
                 if attr_type == SourceAddress:
                     port = int(binascii.b2a_hex(buf[base+6:base+8]), 16)
                     ip = "".join([str(int(binascii.b2a_hex(buf[base+8:base+9]), 16)),'.',
@@ -129,7 +129,7 @@ def Test(s, host, port, source_ip, source_port, send_data=""):
                     str(int(binascii.b2a_hex(buf[base+11:base+12]), 16))])
                     retVal['ChangedIP'] = ip
                     retVal['ChangedPort'] = port
-
+                
                 if attr_type == ServerName:
                     serverName = buf[(base+4):(base+4+attr_len)]
                 base = base + 4 + attr_len
@@ -148,7 +148,7 @@ def Initialize():
     dictValToMsgType = {}
     for i in xrange(len(items)):
         dictValToMsgType.update({items[i][1]:items[i][0]})
-    
+        
 
 def GetNATType(s, source_ip, source_port):
     Initialize()
@@ -156,7 +156,7 @@ def GetNATType(s, source_ip, source_port):
     
     host = "stun.ekiga.net" 
     port = 3478
-
+    
     print "Do Test1"
     ret = Test(s, host, port, source_ip, source_port)
     print "Result:",ret
@@ -176,7 +176,7 @@ def GetNATType(s, source_ip, source_port):
                 type = OpenInternet
             else:
                 type = SymmetricUDPFirewall
-            
+        
         else:
             changeRequest = ''.join([ChangeRequest,'0004',"00000006"])
             print "Do Test2"

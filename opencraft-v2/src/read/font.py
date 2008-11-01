@@ -11,7 +11,7 @@ def read_font_palette(f):
             r.append(color[:3])
         palette.append(r)
     return palette
-    
+
 def read_font(file):
     file.seek(0,2)
     flen = file.tell()

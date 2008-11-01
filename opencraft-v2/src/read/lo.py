@@ -4,7 +4,7 @@ def read_struct(f, s):
     l = struct.calcsize(s)
     d = f.read(l)
     return struct.unpack(s, d)
-    
+
 def load(f):
     frames = read_struct(f,"<I")[0]
     overlays = read_struct(f,"<I")[0]
@@ -18,7 +18,7 @@ def load(f):
             frame.append((poss[i*2],poss[i*2+1]))
         result.append(frame)
     return result
-    
+
 if __name__ == "__main__":
     import sys
     for frame in load(open(sys.argv[1])):

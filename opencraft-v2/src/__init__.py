@@ -6,13 +6,13 @@ import music
 def display_image(image):
     ui.display.blit(image, ui.get_center_coords(image.get_size(), ui.display.get_size()))
     pygame.display.update()
-    
+
 def play_introduction():
     music.fadeout()
     ui.Video("smk\\blizzard.smk")
     ui.Video("smk\\starxintr.smk")
     music.start("music\\title.wav")
-    
+
 def main():
     os.environ['SDL_VIDEO_CENTERED'] = '1'
     
@@ -31,7 +31,7 @@ def main():
     if not Config.config.introduction_played:
         play_introduction()
         Config.config.introduction_played = True
-        
+    
     def multiplayer(): print "multiplayer"
     def credits(): print "credits"
     

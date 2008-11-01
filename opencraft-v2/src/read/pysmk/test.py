@@ -18,11 +18,11 @@ if sys.argv[2] == "time":
     count = 10
     res = 1000000.
     for i in xrange(rep):
-      start = time.time()
-      for x in xrange(count):
-        smk = pysmk.SMKReader(open(sys.argv[1]))
-      end = time.time()
-      res = min(res, (end-start)/count)
+        start = time.time()
+        for x in xrange(count):
+            smk = pysmk.SMKReader(open(sys.argv[1]))
+        end = time.time()
+        res = min(res, (end-start)/count)
     print "%f ms/start" % (res*1000)
     
     count = smk.frames-1
@@ -32,13 +32,13 @@ if sys.argv[2] == "time":
         smk.next()
     end = time.time()
     print "%f ms/frame" % ((end-start)/count*1000)
-    
+
 elif sys.argv[2] == "save":
     smk = pysmk.SMKReader(open(sys.argv[1]))
     from PIL import Image
     temp = Image.fromstring("RGBA", smk.video.get_size(), pygame.image.tostring(smk.video, "RGBA"))
     temp.save("x.png")
-    
+
 elif sys.argv[2] == "play":
     pygame.init()
     smk = pysmk.SMKReader(open(sys.argv[1]))

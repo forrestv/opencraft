@@ -22,7 +22,7 @@ def blend(amt, less, more):
     except:
         if amt < 1./2: return less
         return more
-        
+
 class GlxMenu(ui.UI):
     def __init__(self, file, bg, actions):
         ui.UI.__init__(self)
@@ -39,12 +39,12 @@ class GlxMenu(ui.UI):
         self.add_call(self.work, 1./11)
     
     def work(self):
-                print "WORK"
-                i = self.icache[self.bg]
-                self.display.blit(i, (0, 0))
-                for n in self.node.children:
-                    self.draw_node(n)
-                self.update()
+        print "WORK"
+        i = self.icache[self.bg]
+        self.display.blit(i, (0, 0))
+        for n in self.node.children:
+            self.draw_node(n)
+        self.update()
     
     def draw_node(self, n):
         n.activeblend = (n.active+n.activeblend)/2.

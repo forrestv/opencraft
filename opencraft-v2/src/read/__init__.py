@@ -6,27 +6,27 @@ from .. import Config
 def read_bin(f):
     import bin
     return bin.Node(files[f].fakefile)
-    
+
 def read_smk(f):
     import pysmk
     return pysmk.SMKReader(files[f].offsetfile)
-    
+
 def read_exe_icon(f):
     import exe_icon
     return exe_icon.read_icon(files[f].string)
-    
+
 def read_pcx(f):
     import pygame
     return pygame.image.load(files[f].fakefile)
-    
+
 def read_font(f):
     import font
     return font.read_font(files[f].fakefile)
-    
+
 def read_font_palette(f):
     import font
     return font.read_font_palette(files[f].fakefile)
-    
+
 def read_wav(f):
     import wav
     return wav.read_wav(files[f].file)
@@ -57,7 +57,7 @@ class FileWrapper(object):
     @property
     def string(self):
         return str(self._file)
-        
+
 class FileFinder:
     def __init__(self, path):
         self.archives = []
@@ -76,5 +76,5 @@ class FileFinder:
             else:
                 return FileWrapper(f)
         raise KeyError, item
-        
+
 files = FileFinder(os.path.join(Config.path, "archives"))

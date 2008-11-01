@@ -1,6 +1,6 @@
 class Order(object):
     def __init__(self, unit):
-       self.unit = unit
+        self.unit = unit
     @classmethod
     def deserialize(cls, data):
         cls
@@ -73,4 +73,4 @@ class Hold(Order): pass
 class SetRallyPoint(Order): pass
 
 class Liftoff(Order): pass
-'''
+''

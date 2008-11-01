@@ -32,7 +32,7 @@ class Config(object):
     def _write(self):
         f = open(self._path, "w")
         pickle.dump(self._data, f)
-        
+
 path = os.path.join(os.environ['HOME'], ".opencraft")
 
 config = Config(os.path.join(path, "config.pkl"))

@@ -16,7 +16,7 @@ class Sprite(cdict.cdict):
         cdict.cdict.__init__(self, self.image_getter)
     def image_getter(frame):
         return Image(self)
-
+        
 
 def image_getter(n
 
