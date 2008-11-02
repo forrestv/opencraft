@@ -23,4 +23,9 @@ def main():
         src.main()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except:
+        import pygame
+        pygame.quit()
+        raise

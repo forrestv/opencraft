@@ -1,7 +1,8 @@
 import os
 import pygame
-import ui
 import time
+
+from .. import ui
 
 class Video(ui.UI):
     def __init__(self, name):

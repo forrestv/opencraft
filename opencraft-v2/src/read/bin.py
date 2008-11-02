@@ -128,7 +128,7 @@ if __name__ == "__main__":
     f = sys.argv[1]
     t = Node(f)
     print_tree(t)
-    sys.exit()
+    #sys.exit()
     import pygame
     import random
     d = pygame.display.set_mode((t.width,t.height))

@@ -1,12 +1,13 @@
 import pygame
+
 from .. import read
 from .. import cdict
-import ui
+from .. import ui
 
-import font
+from . import font
 
 def blend(amt, less, more):
-    if amt < 1./256: return less
+    if amt < 1./255: return less
     if amt > 255./256: return more
     try:
         l = pygame.surfarray.pixels3d(less).astype('f')
@@ -23,6 +24,8 @@ def blend(amt, less, more):
         if amt < 1./2: return less
         return more
 
+class MenuClosed(Exception): pass
+
 class GlxMenu(ui.UI):
     def __init__(self, file, bg, actions):
         ui.UI.__init__(self)
@@ -36,12 +39,18 @@ class GlxMenu(ui.UI):
         self.tcache = cdict.cdict(lambda x: font.render(x[0], palette, x[1]))
         for n in self.node.children:
             n.activeblend = 0
-        self.add_call(self.work, 1./11)
+        self.add_call(self.advance, 1./11)
+        self.add_call(self.draw, None)
     
-    def work(self):
-        print "WORK"
+    def advance(self):
+        for n in self.node.children:
+         for m in n.children:
+            v = self.vcache[m.text]
+            v.next()
+    
+    def draw(self):
         i = self.icache[self.bg]
-        self.display.blit(i, (0, 0))
+        ui.display.blit(i, (0, 0))
         for n in self.node.children:
             self.draw_node(n)
         self.update()
@@ -52,16 +61,15 @@ class GlxMenu(ui.UI):
         for m in n.children:
             v = self.vcache[m.text]
             if not m.play_on_hover or n.active:
-                self.display.blit(v.video, (n.x+m.x, n.y+m.y))
-            v.next()
+                ui.display.blit(v.video, (n.x+m.x, n.y+m.y))
         if n.type == 5:
             i = self.icache[n.text]
             #if n.hide_color_0_edges:
             i.set_colorkey(0)
-            self.display.blit(i, (n.x, n.y))
+            ui.display.blit(i, (n.x, n.y))
         elif n.type == 14 or n.type == 11 or n.type == 10 or n.type == 9:
             if n.type == 11:
-                t = "Version 1.15.2"
+                t = "Version 1.15.3"
                 align = "right"
             else:
                 t = str(n.text)
@@ -77,19 +85,23 @@ class GlxMenu(ui.UI):
                 new = pygame.Surface((n.width-2, n.height),pygame.SRCALPHA)
                 new.blit(i, (new.get_width()-i.get_width(),0))
                 i = new
-            self.display.blit(i, (n.x+n.textx, n.y+n.texty))
+            elif align == "center":
+                new = pygame.Surface((n.width, n.height),pygame.SRCALPHA)
+                new.blit(i, (new.get_width()-i.get_width()/2,0))
+                i = new
+            ui.display.blit(i, (n.x+n.textx, n.y+n.texty))
         else:
-            pygame.draw.rect(self.display, (255,0,0), (n.x,n.y,n.width,n.height),  1)
+            pygame.draw.rect(ui.display, (255,0,0), (n.x,n.y,n.width,n.height),  1)
             #n.text = str(n.type)
             #n.type = 14
     def pressed(self, node):
+        print node.index
         if node.cancel:
-            self.run = False
-            return
+            # done
+            return True
         if node.index in self.actions:
-            self.pause = True
             self.actions[node.index]()
-            self.pause = False
+            self.clock.tick() # ignore time taken
         else:
             print "Action not defined for button", node.index
     
@@ -97,8 +109,7 @@ class GlxMenu(ui.UI):
         for n in self.node.children:
             if n.responds_mouse:
                 if pygame.rect.Rect(n.x+n.mousex1,n.y+n.mousey1,n.mousex2-n.mousex1,n.mousey2-n.mousey1).collidepoint(pos):
-                    self.pressed(n)
-                    break
+                    return self.pressed(n)
     def mousemotion(self, pos, rel, buttons):
         if not pygame.mouse.get_focused():
             for n in self.node.children:
