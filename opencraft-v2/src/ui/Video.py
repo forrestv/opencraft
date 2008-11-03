@@ -3,13 +3,14 @@ import pygame
 import time
 
 from .. import ui
+from .. import read
 
 class Video(ui.UI):
     def __init__(self, name):
-        self.name = name
         ui.UI.__init__(self)
+        self.name = name
+        self.add_call(self.
     def work(self):
-        from .. import read
         smk = read.read_smk(self.name)
         wide_size = (2*smk.video.get_width(), smk.video.get_height())
         self.display.fill((0, 0, 0))
