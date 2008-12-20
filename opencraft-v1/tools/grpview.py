@@ -22,7 +22,7 @@ for i in range(0,len(pal),3):
   v.palette2.append((ord(pal[i]),ord(pal[i+1]),ord(pal[i+2])))
 x = [(x,grp.load(x,v.palette,True)) for x in sys.argv[1:]]
 s = x[0][1][0].get_size()
-d = pygame.display.set_mode((8*s[0],8*s[1]))
+d = pygame.display.set_mode((4*s[0],4*s[1]))
 print "\n".join([" ".join((y[0],str(len(y[1])))) for y in x])
 print x[0][1][0].get_size()
 f = 0
@@ -30,7 +30,7 @@ q = pygame.font.SysFont("Times New Roman", 12, False)
 while 1:
   d.fill((128,128,128))
   for g in x:
-    d.blit(pygame.transform.scale(g[1][f%len(g[1])],(s[0]*8,s[1]*8)),(0,0))
+    d.blit(pygame.transform.scale(g[1][f%len(g[1])],(s[0]*4,s[1]*4)),(0,0))
   b = f%len(g[1])
   z = str(int(oct(b)))
   b = ""
@@ -41,6 +41,6 @@ while 1:
   sb = d.get_size()
   d.blit(r,(sb[0]-sa[0],sb[1]-sa[1]))
   pygame.display.update()
-  pygame.time.wait(1000)
+  pygame.time.wait(1000/15)
   f += 1
   #if f >= len(g): break

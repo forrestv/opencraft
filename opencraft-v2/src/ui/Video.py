@@ -9,10 +9,10 @@ class Video(ui.UI):
     def __init__(self, name):
         ui.UI.__init__(self)
         self.name = name
-        self.add_call(self.
+        self.smk = read.read_smk(self.name)
+        self.wide_size = (2*smk.video.get_width(), smk.video.get_height())
+        self.add_call(self.advance, 1./self.smk.fps)
     def work(self):
-        smk = read.read_smk(self.name)
-        wide_size = (2*smk.video.get_width(), smk.video.get_height())
         self.display.fill((0, 0, 0))
         smk.audio[0].play()
         while self.run:
@@ -27,5 +27,5 @@ class Video(ui.UI):
             time.sleep(1/smk.fps-(time.time()-start))
         smk.audio[0].stop()
     def mousebuttondown(self, **kwargs):
-        self.run = False
+        return True
     keydown = mousebuttondown

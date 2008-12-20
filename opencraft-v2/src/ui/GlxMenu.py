@@ -95,9 +95,9 @@ class GlxMenu(ui.UI):
             #n.text = str(n.type)
             #n.type = 14
     def pressed(self, node):
-        print node.index
+        print node.cancel
         if node.cancel:
-            # done
+            print "done"
             return True
         if node.index in self.actions:
             self.actions[node.index]()

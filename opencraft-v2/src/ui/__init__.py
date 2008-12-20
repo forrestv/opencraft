@@ -43,8 +43,11 @@ class UI(object):
     def handle_events(self):
         res = False
         for event in pygame.event.get():
-            res = res or self.handle_event(event)
-        return res
+            if self.handle_event(event):
+                res = True
+        if res:
+            print "END"
+            return res
     
     def handle_event(self, event):
         name = pygame.event.event_name(event.type).lower()
@@ -52,7 +55,7 @@ class UI(object):
             handler = getattr(self, name)
         except AttributeError:
             return
-        handler(**event.dict)
+        return handler(**event.dict)
     
     def quit(self):
         os._exit(0)    
