@@ -73,7 +73,7 @@ typedef struct {
   int statecounter;
   
   int *state; // incremented
-  char *parent; // Whether in open/closed list, parent id, G cost (only on struct to avoid malloc)
+  char *parent;
   int *gcost;
   int *hcost;
   int *openlistrev;

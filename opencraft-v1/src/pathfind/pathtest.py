@@ -3,23 +3,26 @@ import sys
 import pygame
 import path
 
-c = 2
+c = 10
 
 map = pygame.image.load(sys.argv[1])
 
-d = map.get_size()
-pathf = path.path(d)
+size = map.get_size()
+
+d = pygame.display.set_mode(size)
+d.blit(map,(0,0))
+pygame.display.update()
+
+pathf = path.path(size)
 
 pathf.set_map(0, map)
 
 s = time.time()
-for c in xrange(c):
-  q = pathf.get_path((0,0),0,(d[0]-1,d[1]-1))
+for i in xrange(c):
+  q = pathf.get_path((0,0),0,(size[0]-1,size[1]-1))
 e = time.time()
 print (e-s)/c
 
-d = pygame.display.set_mode(d)
-d.blit(map,(0,0))
 
 l = None
 for i in q:

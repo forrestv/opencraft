@@ -1,3 +1,5 @@
+todo/ideas
+
 unknown terrain - if unknown, return TRUE
 terrain - if unwalkable, return FALSE
 fog - if unknown, return TRUE
