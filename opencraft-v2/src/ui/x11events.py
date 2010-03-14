@@ -9,11 +9,3 @@ def get_fd():
     n = ctypes.cast(n+8, ctypes.POINTER(ctypes.c_int)).contents.value
     n = ctypes.cast(n+8, ctypes.POINTER(ctypes.c_int)).contents.value
     return n
-
-fd = None
-
-def wait(timeout=None):
-    global fd
-    if fd == None:
-        fd = get_fd()
-    select.select([fd], [], [], timeout)
